@@ -1,34 +1,31 @@
+#ifndef DTLN_NR_DTLN_NR_H_
+#define DTLN_NR_DTLN_NR_H_
 
 #if defined(_WIN32) || defined(_WIN64)
-
 #ifdef DLTNNR_EXPORTS
-#    define DLTNNR __declspec(dllexport)
+#define DLTNNR __declspec(dllexport)
 #else
-#    define DLTNNR __declspec(dllimport)
+#define DLTNNR __declspec(dllimport)
 #endif
-
-//Only support 16K 16Bit Mono PCM
 
 class DLTNNR DTLN_NR
-//Windows win32/x86_64
 #else
-class DTLN_NR //#elif defined(__APPLE__)
-//macOS
+class DTLN_NR
 #endif
 {
-public:
-	DTLN_NR();
-	~DTLN_NR();
+ public:
+  DTLN_NR();
+  ~DTLN_NR();
 
-	//Return number of input samples, -1 = Fail
-	int Init(void);
+  // Returns the number of input samples per frame; -1 on failure.
+  int Init();
 
-	//0 = Success, -1 = Fail
-	int Process(short *lpsInputBuffer, short *lpsOutputBuffer);
+  // Returns 0 on success; -1 on failure.
+  int Process(short* input_buffer, short* output_buffer);
 
-private:
-	class m_Impl;
-	m_Impl *m_lpoImpl = nullptr;
+ private:
+  class Impl;
+  Impl* impl_ = nullptr;
 };
 
-
+#endif  // DTLN_NR_DTLN_NR_H_
